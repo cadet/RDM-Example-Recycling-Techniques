@@ -189,5 +189,5 @@ if __name__ == "__main__":
     options = Options()
     options.commit_message = 'Trying out new things'
     options.debug = False
-    options.push = False
+    options.push = True 
     main(options)
