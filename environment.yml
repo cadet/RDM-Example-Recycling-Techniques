@@ -5,8 +5,8 @@ dependencies:
   - python=3.10
   - cadet
   - pip
+  - jupyterlab-myst
+  - jupyterlab
   - pip:
       - cadet-process[docs]
       - cadet-rdm[jupyter]
-      - jupyterlab-myst
-      - jupyterlab
