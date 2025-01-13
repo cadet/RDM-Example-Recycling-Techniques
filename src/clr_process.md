@@ -5,9 +5,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.6
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -35,7 +35,7 @@ For this example, consider a two-component system with a Langmuir isotherm.
 
 ## Component System
 
-```{code-cell}
+```{code-cell} ipython3
 from CADETProcess.processModel import ComponentSystem
 
 component_system = ComponentSystem(['A', 'B'])
@@ -43,7 +43,7 @@ component_system = ComponentSystem(['A', 'B'])
 
 ## Binding Model
 
-```{code-cell}
+```{code-cell} ipython3
 from CADETProcess.processModel import Langmuir
 
 binding_model = Langmuir(component_system, name='langmuir')
@@ -54,7 +54,7 @@ binding_model.capacity = [100, 100]
 
 ## Unit Operations
 
-```{code-cell}
+```{code-cell} ipython3
 from CADETProcess.processModel import (
     Inlet, Cstr, LumpedRateModelWithoutPores, Outlet
 )
@@ -79,7 +79,7 @@ outlet = Outlet(component_system, name='outlet')
 
 ## Flow Sheet
 
-```{code-cell}
+```{code-cell} ipython3
 from CADETProcess.processModel import FlowSheet
 
 flow_sheet = FlowSheet(component_system)
@@ -99,14 +99,14 @@ flow_sheet.add_connection(pump, column)
 
 ## Process
 
-```{code-cell}
+```{code-cell} ipython3
 from CADETProcess.processModel import Process
 process = Process(flow_sheet, 'clr')
 ```
 
 ### Create Events and Durations
 
-```{code-cell}
+```{code-cell} ipython3
 Q = 60/(60*1e6)
 
 process.add_event('feed_on', 'flow_sheet.feed.flow_rate', Q)
@@ -124,7 +124,7 @@ process.add_event('recycle_off_pump', 'flow_sheet.pump.flow_rate', 0)
 ### Event dependencies
 To reduce the number of event times that need to be specified, event dependencies are specified which enforce that always either feed or eluent are being pumped through the column.
 
-```{code-cell}
+```{code-cell} ipython3
 process.add_event_dependency('eluent_off', ['feed_on'])
 
 process.add_event_dependency('recycle_on_state', ['feed_off'])
@@ -137,7 +137,7 @@ process.add_event_dependency('eluent_on', ['recycle_off_state'])
 ### Event Times
 Now, the cycle time is set to $10~min$ and the `feed_duration` to $1~min$.
 
-```{code-cell}
+```{code-cell} ipython3
 process.cycle_time = 2000
 process.feed_off.time = 40
 process.recycle_off_state.time = 1280
@@ -148,7 +148,7 @@ process.recycle_off_state.time = 1280
 Here, the first plot shows the concentration profile at the column outlet.
 It is important to note that since part of this profile is recycled, the concentration profile at the system outlet must be considered (second plot) to evaluate the process performance.
 
-```{code-cell}
+```{code-cell} ipython3
 if __name__ == '__main__':
     from CADETProcess.simulator import Cadet
     process_simulator = Cadet()
@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
 ## Optimize Fractionation Times
 
-```{code-cell}
+```{code-cell} ipython3
 if __name__ == '__main__':
     from CADETProcess.fractionation import FractionationOptimizer
     fractionation_optimizer = FractionationOptimizer()
@@ -184,4 +184,8 @@ Peak shaving can reduce the number of recycling cycles required, since a decreas
 :name: clr_peak_shaving_events
 
 Events for closed-loop recycling process with peak shaving.
+```
+
+```{code-cell} ipython3
+
 ```
