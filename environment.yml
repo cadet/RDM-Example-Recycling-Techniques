@@ -1,4 +1,4 @@
-name: rdm_example
+name: rdm_example_conda
 channels:
   - conda-forge
 dependencies:
